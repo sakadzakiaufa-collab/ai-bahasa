@@ -6,7 +6,6 @@ from google.genai import types
 st.title("🤖 Polyglot AI Tutor")
 st.write("Halo! Aku tutor bahasa Inggris, Jepang, dan Jerman-mu. Yuk mulai latihan!")
 
-# Tambahkan tombol untuk reset chat jika terjadi error memori
 if st.button("🔄 Reset Percakapan / Clear Chat"):
     st.session_state.messages = []
     st.rerun()
@@ -51,24 +50,19 @@ if user_input := st.chat_input("Ketik sesuatu (misal: 'jepang' atau 'belajar ing
         types.Content(role="user", parts=[types.Part.from_text(text=user_input)])
     )
 
-    # 6. KIRIM KE AI DAN AMBIL RESPON
+    # 6. KIRIM KE AI DAN AMBIL RESPON (Tanpa try-except supaya kelihatan error aslinya)
     with st.chat_message("assistant"):
-        try:
-            # Panggil Gemini dengan Instruksi Sistem
-            response = client.models.generate_content(
-                model='gemini-2.0-flash',
-                contents=formatted_contents,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_prompt
-                )
+        response = client.models.generate_content(
+            model='gemini-2.0-flash',
+            contents=formatted_contents,
+            config=types.GenerateContentConfig(
+                system_instruction=system_prompt
             )
-            
-            # Tampilkan jawaban AI di layar
-            st.markdown(response.text)
-            
-            # JIKA SUKSES, BARU SIMPAN KEDUANYA KE MEMORI (Mencegah riwayat duplikat saat error)
-            st.session_state.messages.append({"role": "user", "content": user_input})
-            st.session_state.messages.append({"role": "model", "content": response.text})
-            
-        except Exception as e:
-            st.error("Waduh, koneksi ke server Gemini sempat terputus. Silakan klik tombol 'Reset Percakapan' di atas lalu coba lagi ya!")
+        )
+        
+        # Tampilkan jawaban AI di layar
+        st.markdown(response.text)
+        
+        # Simpan ke memori jika berhasil
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        st.session_state.messages.append({"role": "model", "content": response.text})
