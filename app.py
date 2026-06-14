@@ -56,7 +56,7 @@ if user_input := st.chat_input("Ketik sesuatu (misal: 'jepang' atau 'belajar ing
         try:
             # Panggil Gemini dengan Instruksi Sistem
             response = client.models.generate_content(
-                model='gemini-2.5-flash',
+                model='gemini-2.0-flash',
                 contents=formatted_contents,
                 config=types.GenerateContentConfig(
                     system_instruction=system_prompt
