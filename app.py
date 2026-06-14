@@ -7,7 +7,7 @@ st.title("🤖 Polyglot AI Tutor")
 st.write("Halo! Aku tutor bahasa Inggris, Jepang, dan Jerman-mu. Yuk mulai latihan!")
 
 # 2. INISIALISASI GEMINI CLIENT (Pastikan API Key kamu benar)
-client = genai.Client()
+client = genai.Client(api_key=st.secrets["AIzaSyBGr-Z033LhVDxk1iMJtu1Y1v2Y5J0QAOA"])
 
 # 3. KUNCI INSTRUKSI SISTEM
 system_prompt = (
